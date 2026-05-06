@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADMIN — NEXUS HOST</title>
+  <link rel="stylesheet" href="admin.css">
+  <script type="module" src="admin.js"></script>
+</head>
+<body>
+
+<!-- ACCESS DENIED -->
+<div class="denied" id="deniedScreen">
+  <div class="denied-inner">
+    <div class="denied-icon">⛔</div>
+    <div class="denied-title">ACCESS DENIED</div>
+    <div class="denied-sub">// ANDA TIDAK MEMILIKI IZIN AKSES</div>
+    <button class="denied-btn" onclick="window.location.href='index.html'">KEMBALI KE LOGIN</button>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div class="loading-screen" id="loadingScreen">
+  <div class="loading-inner">
+    <div class="loading-logo">NEXUS<span>HOST</span></div>
+    <div class="loading-sub">// MEMVERIFIKASI AKSES ADMIN...</div>
+    <div class="loading-bar"><div class="loading-fill" id="loadingFill"></div></div>
+  </div>
+</div>
+
+<!-- MAIN ADMIN -->
+<div class="admin-wrap" id="adminWrap" style="display:none">
+
+  <!-- NAVBAR -->
+  <nav class="admin-nav">
+    <div class="admin-logo">NEXUS<span>HOST</span> <em>ADMIN</em></div>
+    <div class="admin-nav-right">
+      <span class="nav-status">● SISTEM ONLINE</span>
+      <div class="admin-user" id="adminUser">
+        <div class="admin-avatar" id="adminAvatar">A</div>
+        <span id="adminName">ADMIN</span>
+      </div>
+      <button class="admin-logout" onclick="logoutAdmin()">LOGOUT</button>
+    </div>
+  </nav>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-num" id="statMembers">0</div>
+      <div class="stat-label">TOTAL MEMBER</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="statOnline">0</div>
+      <div class="stat-label">ONLINE SEKARANG</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="statBanned">0</div>
+      <div class="stat-label">DIBANNED</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="statOrders">0</div>
+      <div class="stat-label">TOTAL ORDER</div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="admin-content">
+
+    <!-- SIDEBAR -->
+    <div class="admin-sidebar">
+      <button class="sidebar-item active" onclick="showTab('members', this)">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        MEMBER
+      </button>
+      <button class="sidebar-item" onclick="showTab('maintenance', this)">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        MAINTENANCE
+      </button>
+      <button class="sidebar-item" onclick="showTab('banned', this)">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+        BANNED
+      </button>
+      <button class="sidebar-item" onclick="showTab('orders', this)">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        ORDERS
+      </button>
+      <button class="sidebar-item" onclick="showTab('log', this)">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        ACTIVITY LOG
+      </button>
+    </div>
+
+    <!-- PANEL -->
+    <div class="admin-panel">
+
+      <!-- TAB: MEMBERS -->
+      <div class="tab-content active" id="tab-members">
+        <div class="panel-header">
+          <div class="panel-title">◈ MEMBER REALTIME</div>
+          <div class="panel-actions">
+            <input class="search-input" id="searchMember" placeholder="CARI EMAIL / NAMA..." oninput="filterMembers()">
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>AVATAR</th>
+                <th>NAMA</th>
+                <th>EMAIL</th>
+                <th>STATUS</th>
+                <th>BERGABUNG</th>
+                <th>AKSI</th>
+              </tr>
+            </thead>
+            <tbody id="memberTable">
+              <tr><td colspan="6" class="table-empty">Memuat data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB: MAINTENANCE -->
+      <div class="tab-content" id="tab-maintenance">
+        <div class="panel-header">
+          <div class="panel-title">◈ MODE MAINTENANCE</div>
+        </div>
+
+        <!-- STATUS -->
+        <div class="mt-status-card" id="mtStatusCard">
+          <div class="mt-status-indicator" id="mtIndicator">● WEBSITE NORMAL</div>
+          <div class="mt-toggle-wrap">
+            <span class="mt-toggle-label">MAINTENANCE MODE</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="mtToggle" onchange="toggleMaintenance()">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- FORM MAINTENANCE -->
+        <div class="mt-form">
+          <div class="mt-form-title">◈ KONFIGURASI MAINTENANCE</div>
+
+          <label class="form-label">JUDUL PESAN</label>
+          <input class="form-input" id="mtTitle" value="SERVER MAINTENANCE" placeholder="Judul pesan maintenance...">
+
+          <label class="form-label">PESAN KE PENGUNJUNG</label>
+          <textarea class="form-input" id="mtMessage" rows="3" placeholder="Pesan yang ditampilkan ke pengunjung...">Kami sedang melakukan pemeliharaan sistem. Mohon tunggu sebentar.</textarea>
+
+          <label class="form-label">ESTIMASI SELESAI</label>
+          <input class="form-input" type="datetime-local" id="mtDeadline">
+
+          <label class="form-label">GAMBAR / BANNER (URL)</label>
+          <input class="form-input" id="mtImage" placeholder="https://... (kosongkan untuk default)">
+
+          <button class="mt-save-btn" onclick="saveMaintenance()">◈ SIMPAN KONFIGURASI</button>
+        </div>
+
+        <!-- PREVIEW -->
+        <div class="mt-preview">
+          <div class="mt-preview-title">◈ PREVIEW HALAMAN MAINTENANCE</div>
+          <div class="mt-preview-box">
+            <div class="preview-logo">NEXUS<span>HOST</span></div>
+            <div class="preview-icon">🔧</div>
+            <div class="preview-title" id="previewTitle">SERVER MAINTENANCE</div>
+            <div class="preview-msg" id="previewMsg">Kami sedang melakukan pemeliharaan sistem.</div>
+            <div class="preview-timer" id="previewTimer">SELESAI DALAM: --:--:--</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: BANNED -->
+      <div class="tab-content" id="tab-banned">
+        <div class="panel-header">
+          <div class="panel-title">◈ DAFTAR BANNED</div>
+          <div class="panel-actions">
+            <input class="form-input" id="banEmail" placeholder="EMAIL YANG MAU DIBAN..." style="width:240px">
+            <input class="form-input" id="banReason" placeholder="ALASAN BAN..." style="width:180px">
+            <button class="ban-btn" onclick="banUser()">BAN</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>EMAIL</th>
+                <th>ALASAN</th>
+                <th>TANGGAL BAN</th>
+                <th>AKSI</th>
+              </tr>
+            </thead>
+            <tbody id="bannedTable">
+              <tr><td colspan="4" class="table-empty">Tidak ada yang dibanned</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB: ORDERS -->
+      <div class="tab-content" id="tab-orders">
+        <div class="panel-header">
+          <div class="panel-title">◈ SEMUA ORDER</div>
+        </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>NAMA</th>
+                <th>EMAIL</th>
+                <th>PAKET</th>
+                <th>TOTAL</th>
+                <th>WAKTU</th>
+                <th>STATUS</th>
+              </tr>
+            </thead>
+            <tbody id="orderTable">
+              <tr><td colspan="6" class="table-empty">Belum ada order</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB: LOG -->
+      <div class="tab-content" id="tab-log">
+        <div class="panel-header">
+          <div class="panel-title">◈ ACTIVITY LOG</div>
+          <button class="ban-btn" onclick="clearLog()" style="background:rgba(255,58,58,0.1);border-color:rgba(255,58,58,0.3);color:var(--danger)">HAPUS LOG</button>
+        </div>
+        <div id="logList" class="log-list"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="confirm-modal" id="confirmModal">
+  <div class="confirm-box">
+    <div class="confirm-title" id="confirmTitle">KONFIRMASI</div>
+    <div class="confirm-msg" id="confirmMsg">Yakin?</div>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="closeConfirm()">BATAL</button>
+      <button class="confirm-ok" id="confirmOk">YA, LANJUTKAN</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="admin.js"></script>
+</body>
+</html>

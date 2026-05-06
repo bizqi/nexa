@@ -1,0 +1,582 @@
+/* =============================================
+   IKI LOGIN — CYBERPUNK CSS
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #030712;
+  --surface:  #080f1c;
+  --surface2: #0d1729;
+  --cyan:     #00ffff;
+  --pink:     #ff2d7a;
+  --green:    #00ff88;
+  --text:     #d0eeff;
+  --muted:    #3a6080;
+  --danger:   #ff3a3a;
+  --success:  #00ff88;
+  --radius:   0px;
+  --glow-c:   0 0 12px rgba(0,255,255,0.5), 0 0 30px rgba(0,255,255,0.15);
+  --glow-p:   0 0 12px rgba(255,45,122,0.5), 0 0 30px rgba(255,45,122,0.15);
+}
+
+/* =============================================
+   BASE
+   ============================================= */
+
+body {
+  font-family: 'Share Tech Mono', monospace;
+  background: var(--bg);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: hidden;
+  position: relative;
+  cursor: crosshair;
+}
+
+/* scanlines */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,255,255,0.018) 2px,
+    rgba(0,255,255,0.018) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* perspective grid floor */
+body::after {
+  content: '';
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 50vh;
+  background:
+    linear-gradient(to bottom, transparent, rgba(0,255,255,0.04)),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent calc(10% - 1px),
+      rgba(0,255,255,0.06) calc(10% - 1px),
+      rgba(0,255,255,0.06) 10%
+    );
+  transform: perspective(300px) rotateX(45deg);
+  transform-origin: bottom;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* =============================================
+   SCROLLBAR
+   ============================================= */
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--cyan); }
+
+/* =============================================
+   CARD
+   ============================================= */
+
+.card {
+  background: var(--surface);
+  border: 1px solid rgba(0,255,255,0.2);
+  width: 100%;
+  max-width: 420px;
+  padding: 40px 36px;
+  position: relative;
+  z-index: 10;
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+  box-shadow:
+    0 0 0 1px rgba(0,255,255,0.05),
+    0 0 40px rgba(0,255,255,0.06),
+    inset 0 0 40px rgba(0,255,255,0.02);
+  animation: bootUp 0.6s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+@keyframes bootUp {
+  0%   { opacity: 0; transform: translateY(30px) scaleX(0.95); }
+  60%  { transform: translateY(-4px) scaleX(1.01); }
+  100% { opacity: 1; transform: translateY(0) scaleX(1); }
+}
+
+/* corner accent */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 20px;
+  width: 1px; height: 100%;
+  background: linear-gradient(180deg, var(--cyan), transparent 60%);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* top glow line */
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--pink), transparent);
+  animation: topline 3s ease-in-out infinite alternate;
+}
+
+@keyframes topline {
+  0%   { opacity: 0.4; }
+  100% { opacity: 1; box-shadow: 0 0 8px var(--cyan); }
+}
+
+/* =============================================
+   LOGO
+   ============================================= */
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.logo-mark {
+  width: 42px; height: 42px;
+  background: transparent;
+  border: 1px solid var(--cyan);
+  clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', monospace;
+  font-size: 13px; font-weight: 900;
+  color: var(--cyan);
+  letter-spacing: 1px;
+  box-shadow: var(--glow-c), inset 0 0 12px rgba(0,255,255,0.08);
+}
+
+.logo-text h1 {
+  font-family: 'Orbitron', monospace;
+  font-size: 15px; font-weight: 900;
+  color: var(--cyan);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-shadow: 0 0 15px rgba(0,255,255,0.6);
+}
+
+.logo-text span {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px; color: var(--muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* =============================================
+   TITLES
+   ============================================= */
+
+.card-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 22px; font-weight: 900;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(0,255,255,0.5);
+}
+
+.card-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px; color: var(--muted);
+  margin-bottom: 28px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.card-sub::before { content: '// '; color: var(--pink); }
+
+/* =============================================
+   DIVIDER
+   ============================================= */
+
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 24px 0;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px; color: var(--muted);
+  letter-spacing: 3px; text-transform: uppercase;
+}
+
+.divider::before, .divider::after {
+  content: ''; flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,255,255,0.2), transparent);
+}
+
+/* =============================================
+   GOOGLE BUTTON
+   ============================================= */
+
+.social-btn {
+  width: 100%;
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px;
+  padding: 13px 16px;
+  border: 1px solid rgba(0,255,255,0.25);
+  background: var(--surface2);
+  font-family: 'Orbitron', monospace;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--cyan);
+  cursor: pointer;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  transition: box-shadow 0.2s, background 0.2s;
+  margin-bottom: 10px;
+}
+
+.social-btn:hover {
+  background: rgba(0,255,255,0.06);
+  box-shadow: var(--glow-c);
+}
+
+.social-btn:active { transform: scale(0.99); }
+.social-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+.social-btn.loading { opacity: 0.5; pointer-events: none; }
+
+/* =============================================
+   FORM
+   ============================================= */
+
+.form-group { margin-bottom: 16px; }
+
+label {
+  display: block;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px; font-weight: 400;
+  color: var(--muted);
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid rgba(0,255,255,0.15);
+  padding: 12px 14px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px; color: var(--text);
+  outline: none;
+  clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+}
+
+input::placeholder {
+  color: rgba(58,96,128,0.6);
+  font-family: 'Share Tech Mono', monospace;
+}
+
+input:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 1px rgba(0,255,255,0.15), 0 0 12px rgba(0,255,255,0.1);
+  background: rgba(0,255,255,0.03);
+}
+
+/* =============================================
+   PASSWORD TOGGLE
+   ============================================= */
+
+.pw-wrap { position: relative; }
+.pw-wrap input { padding-right: 44px; }
+
+.pw-toggle {
+  position: absolute; right: 12px; top: 50%;
+  transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); padding: 4px;
+  display: flex; align-items: center;
+  transition: color 0.15s;
+}
+
+.pw-toggle:hover { color: var(--cyan); }
+
+/* =============================================
+   FORM OPTIONS
+   ============================================= */
+
+.form-options {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.remember {
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px; color: var(--muted); cursor: pointer;
+  letter-spacing: 1px;
+}
+
+.remember input[type="checkbox"] {
+  width: 14px; height: 14px;
+  accent-color: var(--cyan);
+  cursor: pointer;
+}
+
+.forgot {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px; color: var(--pink);
+  text-decoration: none; letter-spacing: 1px;
+}
+
+.forgot:hover { text-shadow: 0 0 8px var(--pink); }
+
+/* =============================================
+   LOGIN BUTTON
+   ============================================= */
+
+.login-btn {
+  width: 100%;
+  background: linear-gradient(90deg, var(--pink), #ff6b9d);
+  color: #000; border: none;
+  padding: 14px;
+  font-family: 'Orbitron', monospace;
+  font-size: 12px; font-weight: 900;
+  letter-spacing: 3px; text-transform: uppercase;
+  cursor: pointer;
+  clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+  transition: box-shadow 0.2s, transform 0.1s;
+}
+
+.login-btn:hover  { box-shadow: var(--glow-p); }
+.login-btn:active { transform: scale(0.99); }
+
+/* =============================================
+   ALERT
+   ============================================= */
+
+.alert {
+  display: none;
+  padding: 10px 14px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px; font-weight: 400;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+  clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.alert.error {
+  background: rgba(255,58,58,0.08);
+  color: var(--danger);
+  border: 1px solid rgba(255,58,58,0.25);
+}
+
+.alert.success {
+  background: rgba(0,255,136,0.08);
+  color: var(--success);
+  border: 1px solid rgba(0,255,136,0.25);
+}
+
+.alert.loading {
+  background: rgba(0,255,255,0.05);
+  color: var(--cyan);
+  border: 1px solid rgba(0,255,255,0.2);
+}
+
+.alert.show { display: flex; align-items: center; gap: 8px; }
+
+/* =============================================
+   SPINNER
+   ============================================= */
+
+.spinner {
+  width: 14px; height: 14px;
+  border: 1px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* =============================================
+   FOOTER
+   ============================================= */
+
+.card-footer {
+  text-align: center;
+  margin-top: 24px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px; color: var(--muted);
+  letter-spacing: 1px;
+}
+
+.card-footer a {
+  color: var(--cyan); font-weight: 400;
+  text-decoration: none;
+}
+
+.card-footer a:hover { text-shadow: 0 0 8px var(--cyan); }
+
+/* =============================================
+   USER CARD (post-login)
+   ============================================= */
+
+.user-card { display: none; text-align: center; }
+.user-card.show { display: block; animation: bootUp 0.4s ease; }
+
+.avatar {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  border: 2px solid var(--cyan);
+  object-fit: cover;
+  box-shadow: var(--glow-c);
+}
+
+.avatar-placeholder {
+  width: 72px; height: 72px;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  background: rgba(0,255,255,0.08);
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  font-family: 'Orbitron', monospace;
+  font-size: 22px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
+  box-shadow: var(--glow-c);
+}
+
+.user-name {
+  font-family: 'Orbitron', monospace;
+  font-size: 18px; font-weight: 700;
+  color: var(--cyan); margin-bottom: 4px;
+  letter-spacing: 2px; text-transform: uppercase;
+  text-shadow: 0 0 15px rgba(0,255,255,0.5);
+}
+
+.user-email {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px; color: var(--muted);
+  margin-bottom: 24px; letter-spacing: 1px;
+}
+
+.to-app-btn {
+  display: block; width: 100%;
+  background: linear-gradient(90deg, var(--pink), #ff6b9d);
+  color: #000; border: none;
+  padding: 13px; text-align: center;
+  font-family: 'Orbitron', monospace;
+  font-size: 11px; font-weight: 900;
+  letter-spacing: 3px; text-transform: uppercase;
+  text-decoration: none; cursor: pointer;
+  clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+  transition: box-shadow 0.2s;
+  margin-bottom: 10px;
+}
+
+.to-app-btn:hover { box-shadow: var(--glow-p); }
+
+.logout-btn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid rgba(0,255,255,0.2);
+  padding: 11px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px; color: var(--muted);
+  letter-spacing: 2px; text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.logout-btn:hover { border-color: var(--danger); color: var(--danger); }
+
+/* =============================================
+   MODAL
+   ============================================= */
+
+.modal-bg {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
+  z-index: 100;
+  align-items: center; justify-content: center;
+  padding: 24px;
+}
+
+.modal-bg.show { display: flex; }
+
+.modal {
+  background: var(--surface);
+  border: 1px solid rgba(0,255,255,0.2);
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  padding: 32px 28px;
+  width: 100%; max-width: 380px;
+  box-shadow: 0 0 40px rgba(0,255,255,0.08);
+  animation: bootUp 0.3s ease;
+}
+
+.modal h3 {
+  font-family: 'Orbitron', monospace;
+  font-size: 16px; font-weight: 700;
+  color: var(--cyan); margin-bottom: 6px;
+  letter-spacing: 2px; text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(0,255,255,0.4);
+}
+
+.modal p {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px; color: var(--muted);
+  margin-bottom: 20px; letter-spacing: 1px;
+  line-height: 1.6;
+}
+
+.modal-btns { display: flex; gap: 10px; margin-top: 16px; }
+
+.modal-btns button {
+  flex: 1; padding: 11px;
+  font-family: 'Orbitron', monospace;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  cursor: pointer; transition: 0.15s;
+  border: none;
+}
+
+.btn-cancel {
+  background: var(--surface2);
+  border: 1px solid rgba(0,255,255,0.15) !important;
+  color: var(--muted);
+}
+
+.btn-cancel:hover { border-color: rgba(0,255,255,0.3) !important; color: var(--cyan); }
+
+.btn-send {
+  background: linear-gradient(90deg, var(--pink), #ff6b9d);
+  color: #000;
+  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+}
+
+.btn-send:hover { box-shadow: var(--glow-p); }
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+
+@media (max-width: 480px) {
+  .card { padding: 28px 20px; }
+  .card-title { font-size: 18px; }
+}
